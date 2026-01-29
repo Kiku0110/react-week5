@@ -44,16 +44,34 @@ function SingleProduct(){
     return !product?(
         <h2>查無產品</h2>):(
         <div className="container mt-3">
-            <div className="card h-100" style={{width:'18rem'}}>
-                <img src={product.imageUrl} className="card-img-top" alt={product.title} />
-                <div className="card-body">
-                    <h5 className="card-title fw-bold">{product.title}</h5>
-                    <p className="card-text text-start">{product.description}</p>
-                    <p className="card-text text-start">價格：{product.price}</p>
-                    <p className="card-text text-start">
-                        <small className="text-body-secondary">{product.unit}</small>
-                    </p>
-                    <button type="button" className="btn btn-dark" onClick={() => addCart(product.id)}>加入購物車</button>
+            <div className="card">
+                <div className="row g-0">
+                    <div className="col-md-5 p-4">
+                        <img src={product.imageUrl} className="img-fluid rounded primary-image" alt={product.title} />
+                    </div>
+                    <div className="col-md-7">
+                        <div className="card-body text-start">
+                            <h5 className="card-title fw-bold">{product.title}</h5>
+                            <p className="card-text text-start"><span className="fw-bold">商品描述：</span>{product.description}</p>
+                            <p className="card-text text-start"><span className="fw-bold">商品內容：</span>{product.content}</p>
+                            <div className="d-flex">
+                                價格：<del className="text-secondary">{product.origin_price}</del> 元 / {product.price} 元
+                            </div>
+                            <p className="card-text text-start">
+                                <small className="text-body-secondary">{product.unit}</small>
+                            </p>
+                            <div className="d-flex overflow-auto">
+                            {
+                                product.imagesUrl.map((url,index)=>{
+                                    return <img key={index} src={url} className="images object-fit img-thumbnail" alt="副圖" />
+                                })
+                            }
+                            </div>
+                            <div className="text-end">
+                                <button type="button" className="btn btn-dark" onClick={() => addCart(product.id)}>加入購物車</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>                    
         </div>
