@@ -21,12 +21,13 @@ body {
 }
 
 img {
+    
     object-fit: contain;
     max-width: 100%;
 }
 
 .primary-image {
-    height: 300px;
+    height: 420px;
 }
 
 .images {
