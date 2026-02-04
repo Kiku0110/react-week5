@@ -29,6 +29,9 @@ function Cart(){
         getCart();
     },[])
 
+    // 判斷購物車是否為空
+    const isCartEmpty = !cart.carts || cart.carts.length === 0;
+
     const updateCart =async(cardId, productId, qty=1) =>{
         try {
             const data = {
@@ -82,7 +85,13 @@ function Cart(){
             <div className="container">
                 <h2 className="mt-3">購物車列表</h2>
                 <div className="text-end mt-4">
-                    <button type="button" className="btn btn-danger" onClick={() => deleteAllCart()}>
+                    {/* 修改點：當購物車為空時，禁用按鈕並改變顏色 (Bootstrap btn-secondary) */}
+                    <button 
+                        type="button" 
+                        className={`btn ${isCartEmpty ? "btn-secondary" : "btn-danger"}`} 
+                        onClick={() => deleteAllCart()}
+                        disabled={isCartEmpty}
+                    >
                     清空購物車
                     </button>
                 </div>
@@ -96,35 +105,44 @@ function Cart(){
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            cart?.carts?.map(cartItem => (
-                                <tr key={cartItem.id}>
-                                    <td>
-                                    <button 
-                                        type="button" 
-                                        className="btn btn-outline-danger btn-sm"
-                                        onClick={() => deleteCart(cartItem.id)}
-                                    >
-                                        刪除
-                                    </button>
+                        {/* 修改點：條件渲染 */}
+                        {isCartEmpty?
+                            (
+                                <tr>
+                                    <td colSpan="4" className="text-center py-4 text-muted">
+                                        購物車目前沒有商品喔！
                                     </td>
-                                    <th scope="row">{cartItem.product.title}</th>
-                                    <td>
-                                        <div className="input-group input-group-sm mb-3">
-                                            <input 
-                                                type="number" 
-                                                className="form-control" 
-                                                aria-label="Sizing example input" 
-                                                aria-describedby="inputGroup-sizing-sm" 
-                                                defaultValue={cartItem.qty}
-                                                onChange={(e) => updateCart(cartItem.id, cartItem.product_id, Number(e.target.value))}
-                                            />
-                                            <span className="input-group-text" id="inputGroup-sizing-sm">{cartItem.product.unit}</span>
-                                        </div>
-                                    </td>
-                                    <td className="text-end">{cartItem.final_total}</td>
                                 </tr>
-                            ))
+                            ):(
+                                cart?.carts?.map(cartItem => (
+                                    <tr key={cartItem.id}>
+                                        <td>
+                                        <button 
+                                            type="button" 
+                                            className="btn btn-outline-danger btn-sm"
+                                            onClick={() => deleteCart(cartItem.id)}
+                                        >
+                                            刪除
+                                        </button>
+                                        </td>
+                                        <th scope="row">{cartItem.product.title}</th>
+                                        <td>
+                                            <div className="input-group input-group-sm mb-3">
+                                                <input 
+                                                    type="number" 
+                                                    className="form-control" 
+                                                    aria-label="Sizing example input" 
+                                                    aria-describedby="inputGroup-sizing-sm" 
+                                                    defaultValue={cartItem.qty}
+                                                    onChange={(e) => updateCart(cartItem.id, cartItem.product_id, Number(e.target.value))}
+                                                />
+                                                <span className="input-group-text" id="inputGroup-sizing-sm">{cartItem.product.unit}</span>
+                                            </div>
+                                        </td>
+                                        <td className="text-end">{cartItem.final_total}</td>
+                                    </tr>
+                                ))
+                            )
                         }
                     </tbody>
                     <tfoot>
