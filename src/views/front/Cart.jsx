@@ -130,7 +130,8 @@ function Cart(){
                                             <div className="input-group input-group-sm mb-3">
                                                 <input 
                                                     type="number" 
-                                                    className="form-control" 
+                                                    className="form-control"
+                                                    min="1"
                                                     aria-label="Sizing example input" 
                                                     aria-describedby="inputGroup-sizing-sm" 
                                                     defaultValue={cartItem.qty}
