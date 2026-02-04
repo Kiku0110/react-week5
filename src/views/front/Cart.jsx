@@ -47,36 +47,63 @@ function Cart(){
     }
 
     const deleteCart =async(cardId) =>{
-        try {
-        
-            const response = await axios.delete(`${API_BASE}/api/${API_PATH}/cart/${cardId}`)
-            Swal.fire({
-                text: `${response.data.message}`,
-                icon: "success"
-            });
-            getCart();
-        } catch (error) {
-            Swal.fire({
-                text: `${error.response.data.message}`,
-                icon: "error"
-            });
+        // 彈出確認視窗
+        const result = await Swal.fire({
+            title: "確定要刪除嗎？",
+            text: "刪除後將無法恢復此商品！",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "確定！",
+            cancelButtonText: "取消"
+        });
+
+        //如果使用者點擊「確定」
+        if(result.isConfirmed){
+            try {
+            
+                const response = await axios.delete(`${API_BASE}/api/${API_PATH}/cart/${cardId}`)
+                Swal.fire({
+                    text: `${response.data.message}`,
+                    icon: "success"
+                });
+                getCart();
+            } catch (error) {
+                Swal.fire({
+                    text: `${error.response.data.message}`,
+                    icon: "error"
+                });
+            }
         }
     }
 
     const deleteAllCart =async() =>{
-        try {
-            // eslint-disable-next-line no-unused-vars
-            const response = await axios.delete(`${API_BASE}/api/${API_PATH}/carts`)
-            Swal.fire({
-                text: "已清除購物車內容",
-                icon: "success"
-            });
-            getCart();
-        } catch (error) {
-            Swal.fire({
-                text: `${error.response.data.message}`,
-                icon: "error"
-            });
+        const result = await Swal.fire({
+            title: "確定要清空購物車嗎？",
+            text: "這將會移除購物車內的所有商品！",
+            icon: "danger",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            confirmButtonText: "全部清空",
+            cancelButtonText: "考慮一下"
+        });
+
+        if(result.isConfirmed){
+            try {
+                // eslint-disable-next-line no-unused-vars
+                const response = await axios.delete(`${API_BASE}/api/${API_PATH}/carts`)
+                Swal.fire({
+                    text: "已清除購物車內容",
+                    icon: "success"
+                });
+                getCart();
+            } catch (error) {
+                Swal.fire({
+                    text: `${error.response.data.message}`,
+                    icon: "error"
+                });
+            }
         }
     }
 
